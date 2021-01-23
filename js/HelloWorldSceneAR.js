@@ -16,6 +16,8 @@ import {
   ViroARPlaneSelector,
   ViroNode,
   ViroAnimations,
+  ViroARImageMarker,
+  ViroARTrackingTargets,
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
@@ -34,11 +36,7 @@ export default class HelloWorldSceneAR extends Component {
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
-        <ViroNode
-          position={[0, -1, 0]}
-          dragType="FixedToWorld"
-          onDrag={() => {}}
-        >
+        <ViroARImageMarker target={'smile'}>
           <Viro3DObject
             source={require('./res/emoji_smile/emoji_smile.vrx')}
             resources={[
@@ -46,11 +44,29 @@ export default class HelloWorldSceneAR extends Component {
               require('./res/emoji_smile/emoji_smile_normal.png'),
               require('./res/emoji_smile/emoji_smile_specular.png'),
             ]}
-            position={[0, 0.5, 0]}
-            scale={[0.2, 0.2, 0.2]}
+            // position={[0, 0.5, 0]}
+            scale={[0.05, 0.05, 0.05]}
             type="VRX"
           />
-        </ViroNode>
+        </ViroARImageMarker>
+        {/* <ViroNode
+          position={[0, -1, 0]}
+          dragType="FixedToWorld"
+          onDrag={() => {}}
+        > */}
+
+        {/* <Viro3DObject
+          source={require('./res/emoji_heart/emoji_heart.vrx')}
+          // materials={['banana']}
+          resources={[
+            require('./res//emoji_heart/emoji_heart.png'),
+            require('./res//emoji_heart/emoji_heart_specular.png'),
+          ]}
+          position={[0, 0.5, -1]}
+          scale={[0.1, 0.1, 0.1]}
+          type="VRX"
+        /> */}
+        {/* </ViroNode> */}
         <ViroText
           text={this.state.text}
           scale={[0.5, 0.5, 0.5]}
@@ -101,6 +117,9 @@ ViroMaterials.createMaterials({
   grid: {
     diffuseTexture: require('./res/grid_bg.jpg'),
   },
+  banana: {
+    diffuseTexture: require('./res/banana/Banana_BaseColor.png'),
+  },
 });
 
 ViroAnimations.registerAnimations({
@@ -111,6 +130,14 @@ ViroAnimations.registerAnimations({
       rotateZ: '+=90',
     },
     duration: 250, //.25 seconds
+  },
+});
+
+ViroARTrackingTargets.createTargets({
+  smile: {
+    source: require('./res/smile.jpeg'),
+    orientation: 'Up',
+    physicalWidth: 0.15, // real world width in meters
   },
 });
 

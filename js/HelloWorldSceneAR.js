@@ -64,7 +64,10 @@ export default class HelloWorldSceneAR extends Component {
             scale={[0, 0, 0]}
             type="VRX"
             rotation={[-90, 0, 0]}
-            animation={{ name: this.state.animName, run: this.state.playAnim }}
+            animation={{
+              name: this.state.animName,
+              run: this.state.playAnim,
+            }}
             onClick={this._onClick}
           />
           {/* </ViroNode> */}
@@ -148,7 +151,7 @@ export default class HelloWorldSceneAR extends Component {
 
 ViroARTrackingTargets.createTargets({
   smile1: {
-    source: require('./res/smile.jpeg'),
+    source: require('./res/logo.png'),
     orientation: 'Up',
     physicalWidth: 0.1, // real world width in meters
   },

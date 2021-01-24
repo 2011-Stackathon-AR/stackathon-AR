@@ -92,6 +92,9 @@ export default class ViroSample extends Component {
             <Text style={localStyles.buttonText}>VR</Text>
           </TouchableHighlight>
         </View>
+        <View
+          style={{ width: '100%', height: 30, backgroundColor: 'yellow' }}
+        ></View>
       </View>
     );
   }

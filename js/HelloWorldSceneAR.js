@@ -2,7 +2,11 @@
 
 import React, { Component } from 'react';
 
-import { DrawerLayoutAndroidBase, StyleSheet } from 'react-native';
+import {
+  DrawerLayoutAndroidBase,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 
 import {
   ViroARScene,

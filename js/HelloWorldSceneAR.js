@@ -37,6 +37,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
+    console.log('STATE', this.state);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
@@ -143,14 +144,6 @@ ViroAnimations.registerAnimations({
     properties: { scaleX: 0.09, scaleY: 0.09, scaleZ: 0.09 },
     duration: 500,
     easing: 'bounce',
-  },
-});
-
-ViroARTrackingTargets.createTargets({
-  smile: {
-    source: require('./res/smile.jpeg'),
-    orientation: 'Up',
-    physicalWidth: 0.15, // real world width in meters
   },
 });
 

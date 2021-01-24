@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { StyleSheet } from 'react-native';
+import { DrawerLayoutAndroidBase, StyleSheet } from 'react-native';
 
 import {
   ViroARScene,
@@ -18,6 +18,7 @@ import {
   ViroAnimations,
   ViroARImageMarker,
   ViroARTrackingTargets,
+  ViroFlexView,
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
@@ -64,12 +65,30 @@ export default class HelloWorldSceneAR extends Component {
           />
           {/* </ViroNode> */}
         </ViroARImageMarker>
-        <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          style={styles.helloWorldTextStyle}
-        />
+        <ViroARImageMarker
+          target={'prompt'}
+          onAnchorFound={this._onAnchorFound}
+        >
+          <ViroFlexView
+            style={{
+              flexDirection: 'row',
+              padding: 0.1,
+              backgroundColor: 'yellow',
+            }}
+            width={0.5}
+            height={0.5}
+            rotation={[-90, 0, 0]}
+            // position={[0, 0, -1.0]}
+          >
+            <ViroText
+              text={this.state.text}
+              // scale={[0.5, 0.5, 0.5]}
+              // position={[0, 0, -1]}
+              style={styles.helloWorldTextStyle}
+            />
+          </ViroFlexView>
+        </ViroARImageMarker>
+
         <ViroBox
           position={[0, -0.5, -1]}
           scale={[0.3, 0.3, 0.1]}
@@ -92,7 +111,7 @@ export default class HelloWorldSceneAR extends Component {
   _onInitialized(state, reason) {
     if (state == ViroConstants.TRACKING_NORMAL) {
       this.setState({
-        text: 'Sato and Ivan AR Project!!!',
+        text: 'This is TEXT',
       });
     } else if (state == ViroConstants.TRACKING_NONE) {
       // Handle loss of tracking
@@ -100,13 +119,20 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onAnchorFound() {
+    console.log('onAnchorFound');
     this.setState({
       animateCar: true,
     });
   }
 }
+
 ViroARTrackingTargets.createTargets({
   smile1: {
+    source: require('./res/smile.jpeg'),
+    orientation: 'Up',
+    physicalWidth: 0.1, // real world width in meters
+  },
+  prompt: {
     source: require('./res/logo.png'),
     orientation: 'Up',
     physicalWidth: 0.1, // real world width in meters
@@ -115,10 +141,11 @@ ViroARTrackingTargets.createTargets({
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
-    fontSize: 10,
-    color: '#ffffff',
+    fontSize: 8,
+    color: '#000000',
     textAlignVertical: 'center',
     textAlign: 'center',
+    flex: 0.5,
   },
 });
 
@@ -142,6 +169,11 @@ ViroAnimations.registerAnimations({
   },
   scaleCar: {
     properties: { scaleX: 0.09, scaleY: 0.09, scaleZ: 0.09 },
+    duration: 500,
+    easing: 'bounce',
+  },
+  removePrompt: {
+    properties: { scaleX: 0, scaleY: 0, scaleZ: 0 },
     duration: 500,
     easing: 'bounce',
   },

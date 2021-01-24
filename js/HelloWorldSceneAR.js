@@ -40,7 +40,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    console.log('STATEEEE!!', this.state);
+    console.log('STATE', this.state);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
@@ -164,6 +164,9 @@ var styles = StyleSheet.create({
 ViroMaterials.createMaterials({
   grid: {
     diffuseTexture: require('./res/grid_bg.jpg'),
+  },
+  banana: {
+    diffuseTexture: require('./res/banana/Banana_BaseColor.png'),
   },
 });
 

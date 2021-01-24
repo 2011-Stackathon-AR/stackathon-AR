@@ -27,16 +27,28 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR...',
+      animateCar: false,
+      smile: false,
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
+    this._onAnchorFound = this._onAnchorFound.bind(this);
   }
 
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
-        <ViroARImageMarker target={'smile'}>
+        <ViroARImageMarker
+          target={'smile1'}
+          onAnchorFound={this._onAnchorFound}
+        >
+          {/* <ViroBox position={[0, 0.25, 0]} scale={[0.5, 0.5, 0.5]} /> */}
+          {/* <ViroNode
+            position={[0, -1, 0]}
+            dragType="FixedToWorld"
+            onDrag={() => {}}
+          > */}
           <Viro3DObject
             source={require('./res/emoji_smile/emoji_smile.vrx')}
             resources={[
@@ -44,29 +56,13 @@ export default class HelloWorldSceneAR extends Component {
               require('./res/emoji_smile/emoji_smile_normal.png'),
               require('./res/emoji_smile/emoji_smile_specular.png'),
             ]}
-            // position={[0, 0.5, 0]}
-            scale={[0.05, 0.05, 0.05]}
+            scale={[0, 0, 0]}
             type="VRX"
+            rotation={[-90, 0, 0]}
+            animation={{ name: 'scaleCar', run: this.state.animateCar }}
           />
+          {/* </ViroNode> */}
         </ViroARImageMarker>
-        {/* <ViroNode
-          position={[0, -1, 0]}
-          dragType="FixedToWorld"
-          onDrag={() => {}}
-        > */}
-
-        {/* <Viro3DObject
-          source={require('./res/emoji_heart/emoji_heart.vrx')}
-          // materials={['banana']}
-          resources={[
-            require('./res//emoji_heart/emoji_heart.png'),
-            require('./res//emoji_heart/emoji_heart_specular.png'),
-          ]}
-          position={[0, 0.5, -1]}
-          scale={[0.1, 0.1, 0.1]}
-          type="VRX"
-        /> */}
-        {/* </ViroNode> */}
         <ViroText
           text={this.state.text}
           scale={[0.5, 0.5, 0.5]}
@@ -101,8 +97,20 @@ export default class HelloWorldSceneAR extends Component {
       // Handle loss of tracking
     }
   }
-}
 
+  _onAnchorFound() {
+    this.setState({
+      animateCar: true,
+    });
+  }
+}
+ViroARTrackingTargets.createTargets({
+  smile1: {
+    source: require('./res/logo.png'),
+    orientation: 'Up',
+    physicalWidth: 0.1, // real world width in meters
+  },
+});
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
@@ -130,6 +138,11 @@ ViroAnimations.registerAnimations({
       rotateZ: '+=90',
     },
     duration: 250, //.25 seconds
+  },
+  scaleCar: {
+    properties: { scaleX: 0.09, scaleY: 0.09, scaleZ: 0.09 },
+    duration: 500,
+    easing: 'bounce',
   },
 });
 

@@ -28,13 +28,16 @@ export default class HelloWorldSceneAR extends Component {
     // Set initial state here
     this.state = {
       text: 'Initializing AR...',
-      animateCar: false,
-      smile: false,
+      animName: '',
+      playAnim: false,
+      textAnim: false,
+      renderdiv: false,
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
     this._onAnchorFound = this._onAnchorFound.bind(this);
+    this._onClick = this._onClick.bind(this);
   }
 
   render() {
@@ -61,40 +64,46 @@ export default class HelloWorldSceneAR extends Component {
             scale={[0, 0, 0]}
             type="VRX"
             rotation={[-90, 0, 0]}
-            animation={{ name: 'scaleCar', run: this.state.animateCar }}
+            animation={{ name: this.state.animName, run: this.state.playAnim }}
+            onClick={this._onClick}
           />
           {/* </ViroNode> */}
         </ViroARImageMarker>
-        <ViroARImageMarker
-          target={'prompt'}
-          onAnchorFound={this._onAnchorFound}
+        {/* <ViroText
+          text={this.state.text}
+          scale={[0.5, 0.5, 0.5]}
+          position={[0, 0, -1]}
+          style={styles.helloWorldTextStyle}
+        /> */}
+        <ViroNode
+          position={[0, 0, 0]}
+          // dragType="FixedToWorld"
+          // onDrag={() => {}}
         >
-          <ViroFlexView
-            style={{
-              flexDirection: 'row',
-              padding: 0.1,
-              backgroundColor: 'yellow',
-            }}
-            width={0.5}
-            height={0.5}
-            rotation={[-90, 0, 0]}
-            // position={[0, 0, -1.0]}
-          >
-            <ViroText
-              text={this.state.text}
-              // scale={[0.5, 0.5, 0.5]}
-              // position={[0, 0, -1]}
-              style={styles.helloWorldTextStyle}
-            />
-          </ViroFlexView>
-        </ViroARImageMarker>
+          <ViroText
+            text={'TEST!!!'}
+            scale={[0, 0, 0]}
+            position={[0, 0, -1]}
+            style={styles.helloWorldTextStyle}
+            animation={{ name: 'scaleCar', run: this.state.textAnim }}
+          />
+          <ViroBox
+            onClick={this._onClick}
+            position={[0, 0, -3]}
+            scale={[0.3, 0.3, 0.1]}
+            materials={['grid']}
+            animation={{ name: 'rotate', run: true, loop: true }}
+          />
+        </ViroNode>
+        {this.state.renderdiv && (
+          <ViroBox
+            position={[0, 0.3, -2]}
+            scale={[0.3, 0.3, 0.1]}
+            materials={['grid']}
+            animation={{ name: 'rotate', run: true, loop: true }}
+          />
+        )}
 
-        <ViroBox
-          position={[0, -0.5, -1]}
-          scale={[0.3, 0.3, 0.1]}
-          materials={['grid']}
-          animation={{ name: 'rotate', run: true, loop: true }}
-        />
         <ViroAmbientLight color={'#aaaaaa'} />
         <ViroSpotLight
           innerAngle={5}
@@ -119,9 +128,20 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onAnchorFound() {
-    console.log('onAnchorFound');
+    console.log('anchorFound');
     this.setState({
-      animateCar: true,
+      playAnim: true,
+      animName: 'scaleCar',
+      renderdiv: true,
+    });
+  }
+
+  _onClick() {
+    console.log('onClick');
+    this.setState({
+      textAnim: true,
+      renderdiv: true,
+      animName: 'scaleDownCar',
     });
   }
 }
@@ -172,7 +192,7 @@ ViroAnimations.registerAnimations({
     duration: 500,
     easing: 'bounce',
   },
-  removePrompt: {
+  scaleDownCar: {
     properties: { scaleX: 0, scaleY: 0, scaleZ: 0 },
     duration: 500,
     easing: 'bounce',

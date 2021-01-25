@@ -46,6 +46,7 @@ export default class ViroSample extends Component {
     this.state = {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
+      modelItem: {},
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -53,6 +54,7 @@ export default class ViroSample extends Component {
       this
     );
     this._exitViro = this._exitViro.bind(this);
+    this._collectObject = this._collectObject.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -92,11 +94,15 @@ export default class ViroSample extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
+    console.log('STATE in App.js', this);
     return (
       <View style={localStyles.viroContainer}>
         <ViroARSceneNavigator
           {...this.state.sharedProps}
-          initialScene={{ scene: InitialARScene }}
+          initialScene={{
+            scene: InitialARScene,
+            passProps: { _collectObject: this._collectObject },
+          }}
         />
         <View style={localStyles.menu}></View>
       </View>
@@ -111,6 +117,10 @@ export default class ViroSample extends Component {
         navigatorType: navigatorType,
       });
     };
+  }
+
+  _collectObject(target) {
+    this.setState({ modelItem: { name: target } });
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.

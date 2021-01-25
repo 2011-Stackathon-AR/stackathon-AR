@@ -26,8 +26,8 @@ import {
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // Set initial state here
     this.state = {
@@ -45,7 +45,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    console.log('STATE', this.state);
+    console.log('Props passed', this.props);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
@@ -150,6 +150,7 @@ export default class HelloWorldSceneAR extends Component {
 
   _onClick() {
     console.log('onClick');
+    this.props._collectObject('smile');
     this.setState({
       textAnim: true,
       renderdiv: true,

@@ -46,6 +46,8 @@ export default class ViroSample extends Component {
       sharedProps: sharedProps,
       modelItem: null,
       selectedItem: '',
+      promptOpen: false,
+      problemText: 'Find a banana image in the room!',
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -55,6 +57,7 @@ export default class ViroSample extends Component {
     this._exitViro = this._exitViro.bind(this);
     this._collectObject = this._collectObject.bind(this);
     this._selectInventory = this._selectInventory.bind(this);
+    this._togglePrompt = this._togglePrompt.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -101,8 +104,12 @@ export default class ViroSample extends Component {
           {...this.state.sharedProps}
           initialScene={{
             scene: InitialARScene,
-            passProps: { _collectObject: this._collectObject },
+            passProps: {
+              _collectObject: this._collectObject,
+              _togglePrompt: this._togglePrompt,
+            },
           }}
+          viroAppProps={this.state}
         />
         <InventoryBar
           state={this.state}
@@ -127,7 +134,16 @@ export default class ViroSample extends Component {
   }
 
   _selectInventory(target) {
-    this.setState({ selectedItem: target, modelItem: null });
+    this.setState({
+      selectedItem: target,
+      modelItem: null,
+      problemText: 'Congrats! You found it!',
+    });
+  }
+
+  _togglePrompt() {
+    console.log('toggle Prompt called');
+    this.setState({ promptOpen: !this.state.promptOpen });
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.

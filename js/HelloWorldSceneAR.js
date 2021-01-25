@@ -45,19 +45,13 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    console.log('Props passed', this.props);
+    console.log('Props passed to ARscene', this.props);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
           target={'smile1'}
           onAnchorFound={this._onAnchorFound}
         >
-          {/* <ViroBox position={[0, 0.25, 0]} scale={[0.5, 0.5, 0.5]} /> */}
-          {/* <ViroNode
-            position={[0, -1, 0]}
-            dragType="FixedToWorld"
-            onDrag={() => {}}
-          > */}
           <Viro3DObject
             source={require('./res/emoji_smile/emoji_smile.vrx')}
             resources={[
@@ -87,47 +81,41 @@ export default class HelloWorldSceneAR extends Component {
           materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
           text="Go to the star"
         />
-        <ViroNode
-          position={[0, 0, 0]}
-          // dragType="FixedToWorld"
-          // onDrag={() => {}}
-        >
-          <ViroText
-            text={'TEST!!!'}
-            scale={[0, 0, 0]}
-            position={[0, 0, -1]}
-            style={styles.helloWorldTextStyle}
-            animation={{ name: 'scaleCar', run: this.state.textAnim }}
-          />
-          <ViroBox
-            onClick={this._onClick}
-            position={[0, 0, -3]}
-            scale={[0.3, 0.3, 0.1]}
-            materials={['grid']}
-            animation={{ name: 'rotate', run: true, loop: true }}
-          />
-        </ViroNode>
-        {this.state.renderdiv && (
-          <ViroBox
-            position={[0, 0.3, -2]}
-            scale={[0.3, 0.3, 0.1]}
-            materials={['grid']}
-            animation={{ name: 'rotate', run: true, loop: true }}
-          />
-        )}
         <Viro3DObject
           source={require('./res/object_star_anim/object_star_anim.vrx')}
           type="VRX"
           materials="star"
           position={[2, 0.5, -1]}
           highAccuracyEvents={true}
-          scale={[0.2, 0.2, 0.2]}
+          rotation={[0, -60, 0]}
+          scale={[0.25, 0.25, 0.25]}
+          onClick={this.props._togglePrompt}
           animation={{ name: 'rotate', run: true, loop: true }}
           // onClick={() => {
           //   this.props.addCoinToBoard(this.props.id);
           // }}
           // visible={this.props.visible}
         />
+        {this.props.sceneNavigator.viroAppProps.promptOpen && (
+          <ViroFlexView
+            style={styles.problem}
+            position={[4, 0.3, -2.2]}
+            rotation={[0, -60, 0]}
+            width={1.5}
+            height={1}
+          >
+            <ViroText
+              fontSize={15}
+              style={styles.problemText}
+              textLineBreakMode="WordWrap"
+              // position={[2, 0.3, -2.2]}
+
+              // extrusionDepth={8}
+              // materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
+              text={this.props.sceneNavigator.viroAppProps.problemText}
+            />
+          </ViroFlexView>
+        )}
 
         <ViroAmbientLight color={'#aaaaaa'} />
         <ViroSpotLight
@@ -162,7 +150,6 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onClick() {
-    console.log('onClick');
     this.props._collectObject('smile');
     this.setState({
       textAnim: true,
@@ -174,7 +161,7 @@ export default class HelloWorldSceneAR extends Component {
 
 ViroARTrackingTargets.createTargets({
   smile1: {
-    source: require('./res/logo.png'),
+    source: require('./res/banana_target.jpg'),
     orientation: 'Up',
     physicalWidth: 0.1, // real world width in meters
   },
@@ -193,9 +180,16 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     flex: 0.5,
   },
-});
-
-var styles = StyleSheet.create({
+  problem: {
+    backgroundColor: 'white',
+  },
+  problemText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 10,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
   boldFont: {
     color: '#FFFFFF',
     flex: 1,

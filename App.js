@@ -93,10 +93,13 @@ export default class ViroSample extends Component {
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
     return (
-      <ViroARSceneNavigator
-        {...this.state.sharedProps}
-        initialScene={{ scene: InitialARScene }}
-      />
+      <View style={localStyles.viroContainer}>
+        <ViroARSceneNavigator
+          {...this.state.sharedProps}
+          initialScene={{ scene: InitialARScene }}
+        />
+        <View style={localStyles.menu}></View>
+      </View>
     );
   }
 
@@ -174,6 +177,14 @@ var localStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     width: '100%',
+  },
+  menu: {
+    width: '100%',
+    height: 70,
+    backgroundColor: 'black',
+    opacity: 0.7,
+    position: 'absolute',
+    bottom: 0,
   },
 });
 

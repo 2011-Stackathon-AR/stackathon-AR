@@ -18,7 +18,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import { ViroVRSceneNavigator, ViroARSceneNavigator } from 'react-viro';
+import { ViroARSceneNavigator } from 'react-viro';
 import InventoryBar from './js/InventoryBar';
 /*
  TODO: Insert your API key below
@@ -29,10 +29,8 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
-var InitialVRScene = require('./js/HelloWorldScene');
 
 var UNSET = 'UNSET';
-var VR_NAVIGATOR_TYPE = 'VR';
 var AR_NAVIGATOR_TYPE = 'AR';
 
 // This determines which type of experience to launch in, or UNSET, if the user should

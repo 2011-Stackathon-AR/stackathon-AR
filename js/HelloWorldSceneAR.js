@@ -76,12 +76,17 @@ export default class HelloWorldSceneAR extends Component {
           />
           {/* </ViroNode> */}
         </ViroARImageMarker>
-        {/* <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          style={styles.helloWorldTextStyle}
-        /> */}
+        <ViroText
+          fontSize={24}
+          style={styles.boldFont}
+          textLineBreakMode="WordWrap"
+          position={[0, 0, -2]}
+          width={1}
+          height={5}
+          extrusionDepth={8}
+          materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
+          text="Go to the star"
+        />
         <ViroNode
           position={[0, 0, 0]}
           // dragType="FixedToWorld"
@@ -173,6 +178,28 @@ var styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     flex: 0.5,
+  },
+});
+
+var styles = StyleSheet.create({
+  boldFont: {
+    color: '#FFFFFF',
+    flex: 1,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+});
+
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    diffuseColor: '#FF0000',
+  },
+  sideMaterial: {
+    diffuseColor: '#0000FF',
   },
 });
 

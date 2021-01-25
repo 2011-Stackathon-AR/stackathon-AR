@@ -1,10 +1,5 @@
-import React, { Component } from 'react';
-// import { StyleSheet } from 'react-native';
+import React from 'react';
 import { ViroParticleEmitter } from 'react-viro';
-import PropTypes from 'prop-types';
-// let ColorPropType = require('react-native').ColorPropType;
-let createReactClass = require('create-react-class');
-
 export default class FireworkEmitter extends React.Component {
   render() {
     let viroFireworkColors = [
@@ -21,14 +16,12 @@ export default class FireworkEmitter extends React.Component {
     let colorRand1 = viroFireworkColors[Math.floor(Math.random() * 5 + 0)];
     let colorRand2 = viroFireworkColors[Math.floor(Math.random() * 5 + 0)];
     let colorRand3 = viroFireworkColors[Math.floor(Math.random() * 5 + 0)];
-
     let startColorRange1 =
       this.props.startColor == undefined ? colorRand1 : this.props.startColor;
     let startColorRange2 =
       this.props.startColor == undefined ? colorRand2 : this.props.startColor;
     let endColor =
       this.props.endColor == undefined ? colorRand3 : this.props.endColor;
-
     return (
       <ViroParticleEmitter
         position={this.props.explosionLocation}
@@ -39,7 +32,7 @@ export default class FireworkEmitter extends React.Component {
         loop={this.props.loop}
         fixedToEmitter={true}
         image={{
-          source: require('../res/particle_firework.png'),
+          source: require('./res/particle_firework.png'),
           height: 0.1,
           width: 0.1,
           bloomThreshold: 0.0,
@@ -58,13 +51,12 @@ export default class FireworkEmitter extends React.Component {
         particleAppearance={{
           opacity: {
             initialRange: [1.0, 1.0],
-            factor: 'time',
+            factor: 'Time',
             interpolation: [{ endValue: 0.0, interval: [800, 1200] }],
           },
-
           color: {
             initialRange: [startColorRange1, startColorRange2],
-            factor: 'time',
+            factor: 'Time',
             interpolation: [{ endValue: endColor, interval: [300, 1200] }],
           },
         }}

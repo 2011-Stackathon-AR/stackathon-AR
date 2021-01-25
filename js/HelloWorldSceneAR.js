@@ -24,7 +24,7 @@ import {
   ViroARTrackingTargets,
   ViroFlexView,
 } from 'react-viro';
-import YouWin from './YouWin';
+import YouWin from './Youwin';
 
 export default class HelloWorldSceneAR extends Component {
   constructor(props) {
@@ -38,6 +38,9 @@ export default class HelloWorldSceneAR extends Component {
       textAnim: false,
       renderdiv: false,
       collision: false,
+      collisionAnim: false,
+      starAnim: 'rotate',
+      flex: true,
     };
 
     // bind 'this' to functions
@@ -48,7 +51,6 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    console.log('Props passed to ARscene', this.props);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
@@ -73,52 +75,41 @@ export default class HelloWorldSceneAR extends Component {
           />
           {/* </ViroNode> */}
         </ViroARImageMarker>
-        <ViroText
-          fontSize={24}
-          style={styles.boldFont}
-          textLineBreakMode="WordWrap"
-          position={[0, 0, -2]}
-          width={1}
-          height={5}
-          extrusionDepth={8}
-          materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
-          text="Go to the star"
-        />
         <Viro3DObject
           source={require('./res/object_star_anim/object_star_anim.vrx')}
           type="VRX"
           materials="star"
-          position={[2, 0.5, -1]}
-          rotation={[0, -60, 0]}
-          scale={[0.25, 0.25, 0.25]}
+          position={[0, 0.3, -1]}
+          scale={[0.125, 0.125, 0.125]}
           onClick={this.props._togglePrompt}
-          animation={{ name: 'rotate', run: true, loop: true }}
+          animation={{ name: this.state.starAnim, run: true, loop: true }}
           physicsBody={{
             type: 'Dynamic',
             mass: 1,
             useGravity: false,
           }}
         />
-        {this.state.collision && (
+        {!this.state.collision && (
           <ViroText
-            fontSize={24}
+            fontSize={22}
             style={styles.boldFont}
             textLineBreakMode="WordWrap"
-            position={[0, 0, -2]}
+            position={[0, 0, -2.5]}
             width={1}
             height={5}
             extrusionDepth={8}
             materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
-            text="COLLISION!!!!"
+            text="Click the star"
           />
         )}
+
         {this.props.sceneNavigator.viroAppProps.promptOpen && (
           <ViroFlexView
             style={styles.problem}
-            position={[4, 0.3, -2.2]}
-            rotation={[0, -60, 0]}
-            width={1.5}
-            height={1}
+            position={[0, 0.15, -2]}
+            width={1}
+            height={0.7}
+            visible={this.state.flex}
           >
             <ViroText
               fontSize={15}
@@ -140,8 +131,8 @@ export default class HelloWorldSceneAR extends Component {
               require('./res/emoji_smile/emoji_smile_normal.png'),
               require('./res/emoji_smile/emoji_smile_specular.png'),
             ]}
-            position={[2, 0.2, -1]}
-            scale={[0.1, 0.1, 0.1]}
+            position={[0, 0, -1]}
+            scale={[0.2, 0.2, 0.2]}
             type="VRX"
             rotation={[0, 0, 0]}
             dragType="FixedDistance"
@@ -152,10 +143,10 @@ export default class HelloWorldSceneAR extends Component {
               useGravity: false,
             }}
             onCollision={this.onCollision}
-            // animation={{
-            //   name: this.state.animName,
-            //   run: this.state.playAnim,
-            // }}
+            animation={{
+              name: 'scaleDownCar',
+              run: this.state.collisionAnim,
+            }}
           />
         )}
 
@@ -168,8 +159,13 @@ export default class HelloWorldSceneAR extends Component {
           color="#ffffff"
           castsShadow={true}
         />
-
-        <YouWin />
+        {this.state.collision && (
+          <ViroNode>
+            <YouWin position={[0, -1, -1]} display={true} />
+            <YouWin position={[-1, 1, 0]} display={false} />
+            <YouWin position={[1, 0, -2]} display={false} />
+          </ViroNode>
+        )}
       </ViroARScene>
     );
   }
@@ -204,7 +200,13 @@ export default class HelloWorldSceneAR extends Component {
 
   onCollision() {
     console.log('Collide');
-    this.setState({ collision: true, text: 'collision' });
+    this.props._onCollision();
+    this.setState({
+      collision: true,
+      collisionAnim: true,
+      starAnim: 'scaleDownCar',
+      flex: false,
+    });
   }
 }
 
@@ -233,6 +235,7 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   problemText: {
+    fontFamily: 'Arial',
     color: 'black',
     fontWeight: 'bold',
     fontSize: 10,

@@ -58,6 +58,7 @@ export default class ViroSample extends Component {
     this._collectObject = this._collectObject.bind(this);
     this._selectInventory = this._selectInventory.bind(this);
     this._togglePrompt = this._togglePrompt.bind(this);
+    this._onCollision = this._onCollision.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -107,6 +108,7 @@ export default class ViroSample extends Component {
             passProps: {
               _collectObject: this._collectObject,
               _togglePrompt: this._togglePrompt,
+              _onCollision: this._onCollision,
             },
           }}
           viroAppProps={this.state}
@@ -137,7 +139,6 @@ export default class ViroSample extends Component {
     this.setState({
       selectedItem: target,
       modelItem: null,
-      problemText: 'Congrats! You found it!',
     });
   }
 
@@ -151,6 +152,10 @@ export default class ViroSample extends Component {
     this.setState({
       navigatorType: UNSET,
     });
+  }
+
+  _onCollision() {
+    this.setState({ problemText: 'Congrats! You found it!' });
   }
 }
 

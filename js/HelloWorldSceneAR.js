@@ -26,8 +26,8 @@ import {
 } from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // Set initial state here
     this.state = {
@@ -45,7 +45,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    console.log('STATE', this.state);
+    console.log('Props passed', this.props);
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized}>
         <ViroARImageMarker
@@ -76,12 +76,17 @@ export default class HelloWorldSceneAR extends Component {
           />
           {/* </ViroNode> */}
         </ViroARImageMarker>
-        {/* <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          style={styles.helloWorldTextStyle}
-        /> */}
+        <ViroText
+          fontSize={24}
+          style={styles.boldFont}
+          textLineBreakMode="WordWrap"
+          position={[0, 0, -2]}
+          width={1}
+          height={5}
+          extrusionDepth={8}
+          materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
+          text="Go to the star"
+        />
         <ViroNode
           position={[0, 0, 0]}
           // dragType="FixedToWorld"
@@ -110,6 +115,19 @@ export default class HelloWorldSceneAR extends Component {
             animation={{ name: 'rotate', run: true, loop: true }}
           />
         )}
+        <Viro3DObject
+          source={require('./res/object_star_anim/object_star_anim.vrx')}
+          type="VRX"
+          materials="star"
+          position={[2, 0.5, -1]}
+          highAccuracyEvents={true}
+          scale={[0.2, 0.2, 0.2]}
+          animation={{ name: 'rotate', run: true, loop: true }}
+          // onClick={() => {
+          //   this.props.addCoinToBoard(this.props.id);
+          // }}
+          // visible={this.props.visible}
+        />
 
         <ViroAmbientLight color={'#aaaaaa'} />
         <ViroSpotLight
@@ -145,6 +163,7 @@ export default class HelloWorldSceneAR extends Component {
 
   _onClick() {
     console.log('onClick');
+    this.props._collectObject('smile');
     this.setState({
       textAnim: true,
       renderdiv: true,
@@ -176,6 +195,34 @@ var styles = StyleSheet.create({
   },
 });
 
+var styles = StyleSheet.create({
+  boldFont: {
+    color: '#FFFFFF',
+    flex: 1,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+});
+
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    diffuseColor: '#FF0000',
+  },
+  sideMaterial: {
+    diffuseColor: '#0000FF',
+  },
+  star: {
+    shininess: 2.0,
+    lightingModel: 'Blinn',
+    diffuseTexture: require('./res/object_star_anim/object_star_diffuse.png'),
+    specularTexture: require('./res/object_star_anim/object_star_specular.png'),
+  },
+});
+
 ViroMaterials.createMaterials({
   grid: {
     diffuseTexture: require('./res/grid_bg.jpg'),
@@ -189,8 +236,8 @@ ViroAnimations.registerAnimations({
   rotate: {
     properties: {
       rotateY: '+=90',
-      rotateX: '+=90',
-      rotateZ: '+=90',
+      // rotateX: '+=90',
+      // rotateZ: '+=90',
     },
     duration: 250, //.25 seconds
   },

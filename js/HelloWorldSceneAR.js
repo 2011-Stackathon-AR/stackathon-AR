@@ -36,15 +36,12 @@ export default class HelloWorldSceneAR extends Component {
       playAnim: false,
       textAnim: false,
       renderdiv: false,
-      promptOpen: false,
-      problem1: 'Find banana image in the room!',
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
     this._onAnchorFound = this._onAnchorFound.bind(this);
     this._onClick = this._onClick.bind(this);
-    this.togglePrompt = this.togglePrompt.bind(this);
   }
 
   render() {
@@ -92,14 +89,14 @@ export default class HelloWorldSceneAR extends Component {
           highAccuracyEvents={true}
           rotation={[0, -60, 0]}
           scale={[0.25, 0.25, 0.25]}
-          onClick={this.togglePrompt}
-          // animation={{ name: 'rotate', run: true, loop: true }}
+          onClick={this.props._togglePrompt}
+          animation={{ name: 'rotate', run: true, loop: true }}
           // onClick={() => {
           //   this.props.addCoinToBoard(this.props.id);
           // }}
           // visible={this.props.visible}
         />
-        {this.state.promptOpen && (
+        {this.props.sceneNavigator.viroAppProps.promptOpen && (
           <ViroFlexView
             style={styles.problem}
             position={[4, 0.3, -2.2]}
@@ -115,7 +112,7 @@ export default class HelloWorldSceneAR extends Component {
 
               // extrusionDepth={8}
               // materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
-              text={this.state.problem1}
+              text={this.props.sceneNavigator.viroAppProps.problemText}
             />
           </ViroFlexView>
         )}
@@ -160,16 +157,11 @@ export default class HelloWorldSceneAR extends Component {
       animName: 'scaleDownCar',
     });
   }
-  togglePrompt() {
-    console.log('toggle prompt in ARscene called');
-    this.setState({ promptOpen: !this.state.promptOpen });
-    this.props._togglePrompt();
-  }
 }
 
 ViroARTrackingTargets.createTargets({
   smile1: {
-    source: require('./res/logo.png'),
+    source: require('./res/banana_target.jpg'),
     orientation: 'Up',
     physicalWidth: 0.1, // real world width in meters
   },

@@ -47,6 +47,7 @@ export default class ViroSample extends Component {
       modelItem: null,
       selectedItem: '',
       promptOpen: false,
+      problemText: 'Find a banana image in the room!',
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -106,9 +107,9 @@ export default class ViroSample extends Component {
             passProps: {
               _collectObject: this._collectObject,
               _togglePrompt: this._togglePrompt,
-              state: this.state,
             },
           }}
+          viroAppProps={this.state}
         />
         <InventoryBar
           state={this.state}
@@ -133,7 +134,11 @@ export default class ViroSample extends Component {
   }
 
   _selectInventory(target) {
-    this.setState({ selectedItem: target, modelItem: null });
+    this.setState({
+      selectedItem: target,
+      modelItem: null,
+      problemText: 'Congrats! You found it!',
+    });
   }
 
   _togglePrompt() {

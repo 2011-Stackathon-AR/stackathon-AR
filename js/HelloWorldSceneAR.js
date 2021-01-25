@@ -24,6 +24,7 @@ import {
   ViroARTrackingTargets,
   ViroFlexView,
 } from 'react-viro';
+import YouWin from './YouWin';
 
 export default class HelloWorldSceneAR extends Component {
   constructor(props) {
@@ -36,12 +37,14 @@ export default class HelloWorldSceneAR extends Component {
       playAnim: false,
       textAnim: false,
       renderdiv: false,
+      collision: false,
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
     this._onAnchorFound = this._onAnchorFound.bind(this);
     this._onClick = this._onClick.bind(this);
+    this.onCollision = this.onCollision.bind(this);
   }
 
   render() {
@@ -90,7 +93,25 @@ export default class HelloWorldSceneAR extends Component {
           scale={[0.25, 0.25, 0.25]}
           onClick={this.props._togglePrompt}
           animation={{ name: 'rotate', run: true, loop: true }}
+          physicsBody={{
+            type: 'Dynamic',
+            mass: 1,
+            useGravity: false,
+          }}
         />
+        {this.state.collision && (
+          <ViroText
+            fontSize={24}
+            style={styles.boldFont}
+            textLineBreakMode="WordWrap"
+            position={[0, 0, -2]}
+            width={1}
+            height={5}
+            extrusionDepth={8}
+            materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
+            text="COLLISION!!!!"
+          />
+        )}
         {this.props.sceneNavigator.viroAppProps.promptOpen && (
           <ViroFlexView
             style={styles.problem}
@@ -111,6 +132,32 @@ export default class HelloWorldSceneAR extends Component {
             />
           </ViroFlexView>
         )}
+        {this.props.sceneNavigator.viroAppProps.selectedItem && (
+          <Viro3DObject
+            source={require('./res/emoji_smile/emoji_smile.vrx')}
+            resources={[
+              require('./res/emoji_smile/emoji_smile_diffuse.png'),
+              require('./res/emoji_smile/emoji_smile_normal.png'),
+              require('./res/emoji_smile/emoji_smile_specular.png'),
+            ]}
+            position={[2, 0.2, -1]}
+            scale={[0.1, 0.1, 0.1]}
+            type="VRX"
+            rotation={[0, 0, 0]}
+            dragType="FixedDistance"
+            onDrag={() => {}}
+            physicsBody={{
+              type: 'Dynamic',
+              mass: 1,
+              useGravity: false,
+            }}
+            onCollision={this.onCollision}
+            // animation={{
+            //   name: this.state.animName,
+            //   run: this.state.playAnim,
+            // }}
+          />
+        )}
 
         <ViroAmbientLight color={'#aaaaaa'} />
         <ViroSpotLight
@@ -121,6 +168,8 @@ export default class HelloWorldSceneAR extends Component {
           color="#ffffff"
           castsShadow={true}
         />
+
+        <YouWin />
       </ViroARScene>
     );
   }
@@ -151,6 +200,11 @@ export default class HelloWorldSceneAR extends Component {
       renderdiv: true,
       animName: 'scaleDownCar',
     });
+  }
+
+  onCollision() {
+    console.log('Collide');
+    this.setState({ collision: true, text: 'collision' });
   }
 }
 

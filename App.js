@@ -45,7 +45,7 @@ export default class ViroSample extends Component {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
       modelItem: null,
-      selectedItem: '',
+      selectedItem: null,
       promptOpen: false,
       problemText: 'Find a banana image in the room!',
     };

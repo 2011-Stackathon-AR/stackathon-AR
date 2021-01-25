@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 
 import { ViroVRSceneNavigator, ViroARSceneNavigator } from 'react-viro';
-
+import InventoryBar from './js/InventoryBar';
 /*
  TODO: Insert your API key below
  */
@@ -46,7 +46,8 @@ export default class ViroSample extends Component {
     this.state = {
       navigatorType: defaultNavigatorType,
       sharedProps: sharedProps,
-      modelItem: {},
+      modelItem: null,
+      selectedItem: '',
     };
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -55,6 +56,7 @@ export default class ViroSample extends Component {
     );
     this._exitViro = this._exitViro.bind(this);
     this._collectObject = this._collectObject.bind(this);
+    this._selectInventory = this._selectInventory.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -104,7 +106,10 @@ export default class ViroSample extends Component {
             passProps: { _collectObject: this._collectObject },
           }}
         />
-        <View style={localStyles.menu}></View>
+        <InventoryBar
+          state={this.state}
+          _selectInventory={this._selectInventory}
+        />
       </View>
     );
   }
@@ -121,6 +126,10 @@ export default class ViroSample extends Component {
 
   _collectObject(target) {
     this.setState({ modelItem: { name: target } });
+  }
+
+  _selectInventory(target) {
+    this.setState({ selectedItem: target, modelItem: null });
   }
 
   // This function "exits" Viro by setting the navigatorType to UNSET.
@@ -187,14 +196,6 @@ var localStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     width: '100%',
-  },
-  menu: {
-    width: '100%',
-    height: 70,
-    backgroundColor: 'black',
-    opacity: 0.7,
-    position: 'absolute',
-    bottom: 0,
   },
 });
 

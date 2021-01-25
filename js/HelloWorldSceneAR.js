@@ -86,15 +86,10 @@ export default class HelloWorldSceneAR extends Component {
           type="VRX"
           materials="star"
           position={[2, 0.5, -1]}
-          highAccuracyEvents={true}
           rotation={[0, -60, 0]}
           scale={[0.25, 0.25, 0.25]}
           onClick={this.props._togglePrompt}
           animation={{ name: 'rotate', run: true, loop: true }}
-          // onClick={() => {
-          //   this.props.addCoinToBoard(this.props.id);
-          // }}
-          // visible={this.props.visible}
         />
         {this.props.sceneNavigator.viroAppProps.promptOpen && (
           <ViroFlexView

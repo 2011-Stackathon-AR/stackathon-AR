@@ -115,6 +115,19 @@ export default class HelloWorldSceneAR extends Component {
             animation={{ name: 'rotate', run: true, loop: true }}
           />
         )}
+        <Viro3DObject
+          source={require('./res/object_star_anim/object_star_anim.vrx')}
+          type="VRX"
+          materials="star"
+          position={[2, 0.5, -1]}
+          highAccuracyEvents={true}
+          scale={[0.2, 0.2, 0.2]}
+          animation={{ name: 'rotate', run: true, loop: true }}
+          // onClick={() => {
+          //   this.props.addCoinToBoard(this.props.id);
+          // }}
+          // visible={this.props.visible}
+        />
 
         <ViroAmbientLight color={'#aaaaaa'} />
         <ViroSpotLight
@@ -202,6 +215,12 @@ ViroMaterials.createMaterials({
   sideMaterial: {
     diffuseColor: '#0000FF',
   },
+  star: {
+    shininess: 2.0,
+    lightingModel: 'Blinn',
+    diffuseTexture: require('./res/object_star_anim/object_star_diffuse.png'),
+    specularTexture: require('./res/object_star_anim/object_star_specular.png'),
+  },
 });
 
 ViroMaterials.createMaterials({
@@ -217,8 +236,8 @@ ViroAnimations.registerAnimations({
   rotate: {
     properties: {
       rotateY: '+=90',
-      rotateX: '+=90',
-      rotateZ: '+=90',
+      // rotateX: '+=90',
+      // rotateZ: '+=90',
     },
     duration: 250, //.25 seconds
   },

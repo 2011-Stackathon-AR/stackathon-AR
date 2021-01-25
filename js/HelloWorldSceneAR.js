@@ -181,7 +181,6 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onAnchorFound() {
-    console.log('anchorFound');
     this.setState({
       playAnim: true,
       animName: 'scaleCar',
@@ -199,7 +198,6 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   onCollision() {
-    console.log('Collide');
     this.props._onCollision();
     this.setState({
       collision: true,
@@ -272,9 +270,6 @@ ViroMaterials.createMaterials({
 ViroMaterials.createMaterials({
   grid: {
     diffuseTexture: require('./res/grid_bg.jpg'),
-  },
-  banana: {
-    diffuseTexture: require('./res/banana/Banana_BaseColor.png'),
   },
 });
 

@@ -98,7 +98,6 @@ export default class ViroSample extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
-    console.log('STATE in App.js', this);
     return (
       <View style={localStyles.viroContainer}>
         <ViroARSceneNavigator
@@ -143,7 +142,6 @@ export default class ViroSample extends Component {
   }
 
   _togglePrompt() {
-    console.log('toggle Prompt called');
     this.setState({ promptOpen: !this.state.promptOpen });
   }
 

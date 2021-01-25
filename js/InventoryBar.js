@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableHighlight, Image, View } from 'react-native';
 
 const InventoryBar = (props) => {
-  console.log('PROPS in InventoryBar', props);
+  console.log('This is props', props);
   const [render, setRender] = useState(0);
-  console.log('render', render);
-
+  console.log(render);
   const useForceRender = () => {
     return () => setRender((render) => render + 1);
   };
@@ -17,6 +16,7 @@ const InventoryBar = (props) => {
   };
 
   if (props.state.modelItem && render < 1) {
+    console.log('forceRender called');
     forceRender();
   } else if (!props.state.modelItem && render === 1) {
     forceRender();
